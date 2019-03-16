@@ -135,3 +135,9 @@ podDisruptionBudget:
 service:
   percona:
     headless: false
+
+## try to spread pods on nodes evenly
+# use required, othewise use preferred
+affinity:
+  enabled: false
+  required: false
