@@ -26,21 +26,30 @@ spec:
 {{ toYaml .Values.podAnnotations | indent 8 }}
     {{- end }}
     spec:
-      {{- if .Values.affinity.enabled }}
+      {{- if .Values.podAffinity.enabled }}
       affinity:
         podAntiAffinity:
-          {{- if .Values.affinity.required }}
+          {{- if .Values.podAffinity.required }}
           requiredDuringSchedulingIgnoredDuringExecution:
-          {{- else }}
-          preferredDuringSchedulingIgnoredDuringExecution:
-          {{- end }}
           - labelSelector:
               matchExpressions:
               - key: app
                 operator: In
                 values:
-                - {{ template "percona-xtradb-cluster.fullname" . }}
+                - app: {{ template "percona-xtradb-cluster.fullname" . }}
             topologyKey: "kubernetes.io/hostname"
+          {{- else }}
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - app: {{ template "percona-xtradb-cluster.fullname" . }}
+              topologyKey: "kubernetes.io/hostname"
+          {{- end }}
       {{- end }}
       initContainers:
       - name: "remove-lost-found"
