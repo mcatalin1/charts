@@ -36,7 +36,7 @@ spec:
               - key: app
                 operator: In
                 values:
-                - app: {{ template "percona-xtradb-cluster.fullname" . }}
+                - {{ template "percona-xtradb-cluster.fullname" . }}
             topologyKey: "kubernetes.io/hostname"
           {{- else }}
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -47,7 +47,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - app: {{ template "percona-xtradb-cluster.fullname" . }}
+                  - {{ template "percona-xtradb-cluster.fullname" . }}
               topologyKey: "kubernetes.io/hostname"
           {{- end }}
       {{- end }}

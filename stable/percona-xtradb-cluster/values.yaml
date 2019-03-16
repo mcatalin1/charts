@@ -138,6 +138,6 @@ service:
 
 ## try to spread pods on nodes evenly
 # use required, othewise use preferred
-affinity:
+podAffinity:
   enabled: false
   required: false
